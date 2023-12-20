@@ -1,6 +1,5 @@
 import asyncio
 import fnmatch
-import random
 import re
 import string
 import time
@@ -13,6 +12,7 @@ from django.utils.module_loading import import_string
 from channels import DEFAULT_CHANNEL_LAYER
 
 from .exceptions import ChannelFull, InvalidChannelLayerError
+import secrets
 
 
 class ChannelLayerManager:
@@ -260,7 +260,7 @@ class InMemoryChannelLayer(BaseChannelLayer):
         """
         return "%s.inmemory!%s" % (
             prefix,
-            "".join(random.choice(string.ascii_letters) for i in range(12)),
+            "".join(secrets.SystemRandom().choice(string.ascii_letters) for i in range(12)),
         )
 
     # Expire cleanup
