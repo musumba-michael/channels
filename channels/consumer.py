@@ -68,8 +68,7 @@ class AsyncConsumer:
         """
         Works out what to do with a message.
         """
-        handler = getattr(self, get_handler_name(message), None)
-        if handler:
+        if handler := getattr(self, get_handler_name(message), None):
             await handler(message)
         else:
             raise ValueError("No handler for message type %s" % message["type"])
@@ -120,8 +119,7 @@ class SyncConsumer(AsyncConsumer):
         Dispatches incoming messages to type-based handlers asynchronously.
         """
         # Get and execute the handler
-        handler = getattr(self, get_handler_name(message), None)
-        if handler:
+        if handler := getattr(self, get_handler_name(message), None):
             handler(message)
         else:
             raise ValueError("No handler for message type %s" % message["type"])

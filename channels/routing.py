@@ -97,16 +97,14 @@ class URLRouter:
 
     async def __call__(self, scope, receive, send):
         # Get the path
-        path = scope.get("path_remaining", scope.get("path", None))
-        if path is None:
+        if (path := scope.get("path_remaining", scope.get("path", None))) is None:
             raise ValueError("No 'path' key in connection scope, cannot route URLs")
         # Remove leading / to match Django's handling
         path = path.lstrip("/")
         # Run through the routes we have until one matches
         for route in self.routes:
             try:
-                match = route.pattern.match(path)
-                if match:
+                if match := route.pattern.match(path):
                     new_path, args, kwargs = match
                     # Add defaults to kwargs from the URL pattern.
                     kwargs.update(route.default_args)
